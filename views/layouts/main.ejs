@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    
+   
+     <%- include('../partials/head', { cssFile: typeof cssFile !== 'undefined' ? cssFile : '' }) %>
+
+  </head>
+  <body>
+    <%- include('../partials/header') %>
+
+    <main>
+      <%- body %>
+    </main>
+
+    <%- include('../partials/footer') %>
+  </body>
+</html>
