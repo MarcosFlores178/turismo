@@ -1,3 +1,4 @@
+// models/Consulta.js
 module.exports = (sequelize, DataTypes) => {
   const Consulta = sequelize.define("consultas", {
     id_consulta: {
@@ -5,19 +6,43 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    pregunta: {
+    mensaje: {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    id_usuario: {
+    fecha: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    id_usuario: { // ← FK al usuario (guest o registrado)
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "Usuarios",
+        model: "usuarios",
         key: "id_usuario"
+      }
+    },
+    id_paquete: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "paquetes",
+        key: "id_paquete"
       }
     }
   });
+
+  Consulta.associate = (models) => {
+    Consulta.belongsTo(models.Usuario, {
+      foreignKey: "id_usuario",
+      as: "usuario"
+    });
+
+    Consulta.belongsTo(models.Paquete, {
+      foreignKey: "id_paquete",
+      as: "paquete"
+    });
+  };
 
   return Consulta;
 };
