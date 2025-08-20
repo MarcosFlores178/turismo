@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Continente = sequelize.define('Continente', {
+  const Continente = sequelize.define('continentes', {
     id_continente: {
       type: DataTypes.INTEGER,
       primaryKey: true,

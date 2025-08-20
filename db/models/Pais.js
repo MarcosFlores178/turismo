@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Pais = sequelize.define('Pais', {
+  const Pais = sequelize.define('paises', {
     id_pais: {
       type: DataTypes.INTEGER,
       primaryKey: true,
