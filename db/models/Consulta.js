@@ -1,6 +1,6 @@
 // models/Consulta.js
 module.exports = (sequelize, DataTypes) => {
-  const Consulta = sequelize.define("consultas", {
+  const Consulta = sequelize.define("Consulta", {
     id_consulta: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -30,6 +30,8 @@ module.exports = (sequelize, DataTypes) => {
         key: "id_paquete"
       }
     }
+  }, {
+    tableName: "consultas"
   });
 
   Consulta.associate = (models) => {

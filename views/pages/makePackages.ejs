@@ -1,0 +1,63 @@
+<h1>Crear Paquetes</h1>
+<!-- En la parte superior de tu vista -->
+<% if (typeof error !== 'undefined' && error) { %>
+  <div class="error-message" style="background: #ffebee; color: #c62828; padding: 15px; margin: 10px 0; border: 1px solid #c62828; border-radius: 5px;">
+    <strong>⚠️ Error:</strong> <%= error %>
+  </div>
+<% } %>
+
+<% if (typeof success !== 'undefined' && success) { %>
+  <div class="success-message" style="background: #e8f5e9; color: #2e7d32; padding: 15px; margin: 10px 0; border: 1px solid #2e7d32; border-radius: 5px;">
+    <strong>✅ Éxito:</strong> <%= success %>
+  </div>
+<% } %>
+<form action="/packages/make" method="POST" enctype="multipart/form-data">
+  
+  <!-- Datos básicos del paquete -->
+  <div class="form-group">
+    <label>Nombre del Paquete:</label>
+    <input type="text" name="nombre" required>
+  </div>
+
+  <div class="form-group">
+    <label>Descripción:</label>
+    <textarea name="descripcion" required></textarea>
+  </div>
+
+  <div class="form-group">
+    <label>Precio:</label>
+    <input type="number" name="precio" step="0.01" required>
+  </div>
+
+  <div class="form-group">
+    <label>Duración (días):</label>
+    <input type="number" name="duracion_dias" required>
+  </div>
+
+  <!-- Selección de Ciudades (MÚLTIPLE) -->
+  <div class="form-group">
+    <label>Ciudades que incluye el paquete:</label>
+    
+    <!-- Select múltiple para ciudades -->
+    <select name="ciudades" multiple required class="select-multiple">
+      <% ciudades.forEach(ciudad => { %>
+        <option value="<%= ciudad.id_ciudad %>">
+          <%= ciudad.nombre %> - <%= ciudad.Pais.nombre %>
+        </option>
+      <% }); %>
+    </select>
+    <small>Mantén CTRL (Cmd en Mac) para seleccionar múltiples ciudades</small>
+  </div>
+
+  <!-- Campos adicionales para cada ciudad seleccionada -->
+  <div id="ciudades-detalles" style="display: none;">
+    <!-- JavaScript llenará esto dinámicamente -->
+  </div>
+
+  <div class="form-group">
+    <label>¿Es paquete destacado?</label>
+    <input type="checkbox" name="esDestacado" value="true">
+  </div>
+
+  <button type="submit">Crear Paquete</button>
+</form>

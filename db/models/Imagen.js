@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Imagen = sequelize.define('imagenes', {
+  const Imagen = sequelize.define('Imagen', {
     id_imagen: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -17,7 +17,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       allowNull: false
     }
-  });
+  },
+{
+  tableName: 'imagenes',
+  timestamps: false
+});
 
   Imagen.associate = (models) => {
     Imagen.belongsTo(models.Paquete, {

@@ -1,5 +1,7 @@
+const { TableHints } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
-  const Ciudad = sequelize.define('ciudades', {
+  const Ciudad = sequelize.define('Ciudad', {
     id_ciudad: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -13,7 +15,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     }
-  });
+  },
+{
+  tableName: 'ciudades',
+  timestamps: false
+});
 
   Ciudad.associate = (models) => {
     Ciudad.belongsTo(models.Pais, {

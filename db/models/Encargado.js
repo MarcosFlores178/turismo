@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Encargado = sequelize.define("encargados", {
+  const Encargado = sequelize.define("Encargado", {
     id_encargado: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     }
-  });
+  },
+{
+  tableName: "encargados",
+  timestamps: false
+});
 
   return Encargado;
 };

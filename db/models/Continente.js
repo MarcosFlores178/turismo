@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Continente = sequelize.define('continentes', {
+  const Continente = sequelize.define('Continente', {
     id_continente: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -9,7 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     }
-  });
+  },
+{
+  tableName: 'continentes',
+  timestamps: false
+});
 
   Continente.associate = (models) => {
     Continente.hasMany(models.Pais, {

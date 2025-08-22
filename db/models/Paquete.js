@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Paquete = sequelize.define('paquetes', {
+  const Paquete = sequelize.define('Paquete', {
     id_paquete: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -21,11 +21,24 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false
     },
-    duracion: {
+    duracion_dias: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
+    },
+    es_destacado: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    esta_activo: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
-  });
+  },
+{
+  tableName: 'paquetes'
+});
 
   Paquete.associate = (models) => {
     Paquete.belongsToMany(models.Ciudad, {

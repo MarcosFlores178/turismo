@@ -1,6 +1,6 @@
 // models/Usuario.js
 module.exports = (sequelize, DataTypes) => {
-  const Usuario = sequelize.define("usuarios", {
+  const Usuario = sequelize.define("Usuario", {
     id_usuario: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -27,8 +27,12 @@ module.exports = (sequelize, DataTypes) => {
     fecha_creacion: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
+    }},
+    {
+      tableName: "usuarios",
+      timestamps: false
     }
-  });
+  );
 
   Usuario.associate = (models) => {
     Usuario.hasMany(models.Consulta, {

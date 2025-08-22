@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const PaqueteCiudad = sequelize.define('paquete_ciudad', {
+    const PaqueteCiudad = sequelize.define('PaqueteCiudad', {
         id_paquete: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -16,11 +16,19 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'id_ciudad'
             }
         },
+        orden_visita: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         es_destino_principal: {
             type: DataTypes.BOOLEAN,
             allowNull: false
         }
-    });
+    },
+{
+    tableName: 'paquetes_ciudades',
+    timestamps: false
+});
 
     PaqueteCiudad.associate = (models) => {
         PaqueteCiudad.belongsTo(models.Paquete, {

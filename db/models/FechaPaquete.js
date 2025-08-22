@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const FechaPaquete = sequelize.define('fechas_paquetes', {
+  const FechaPaquete = sequelize.define('FechaPaquete', {
     id_fecha_paquete: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -25,7 +25,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     }
-  });
+  },
+{
+  tableName: 'fechas_paquetes',
+  timestamps: false
+});
 
   FechaPaquete.associate = (models) => {
     FechaPaquete.belongsTo(models.Paquete, {
