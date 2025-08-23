@@ -1,8 +1,7 @@
-const { Ciudad } = require('../db/models');
-const { Pais } = require('../db/models');
-const { Paquete } = require('../db/models');
-const { PaqueteCiudad } = require('../db/models');
-const { sequelize } = require('../db/models');
+const upload = require('../config/multer');
+const { sequelize, Paquete, Ciudad, Imagen, PaqueteCiudad, Pais } = require('../db/models');
+
+// exports.upload = upload.array('imagenes', 10); // Máximo 10 imágenes
 
 exports.mostrarFormularioCreacion = async (req, res) => {
    
@@ -41,47 +40,75 @@ console.log('🟢 3. Después de Ciudad.findAll - Éxito');
   }
 };
 exports.crearPaquete = async (req, res) => {
-  const transaction = await sequelize.transaction();
+  const transaction = await sequelize.transaction(); // ← Crear transaction
   
   try {
-    const { nombre, destino, descripcion, precio, duracion_dias, es_destacado, ciudades } = req.body;
-
-      // CONVERSIÓN CORRECTA para esDestacado
-    const esDestacadoBool = es_destacado === 'true' || es_destacado === '1' || es_destacado === true;
-
-    // 1. Validar que ciudades sea un array
-    const ciudadesSeleccionadas = Array.isArray(ciudades) ? ciudades : [ciudades];
+    console.log('📦 req.body:', req.body);
+    console.log('📸 req.files:', req.files);
     
-    if (ciudadesSeleccionadas.length === 0) {
-      throw new Error('Debe seleccionar al menos una ciudad');
-    }
+    const { nombre, destino, descripcion, precio, duracion_dias, es_destacado, ciudades } = req.body;
+    const imagenesSubidas = req.files['imagenes'] || [];
+    const imagenPortada = req.body.imagenPortada || '0';
 
-    // 2. Crear el paquete (SOLO datos del paquete, NO ciudades)
+    const esDestacadoBool = esDestacado === 'true' || esDestacado === '1' || esDestacado === true;
+
+    // 1. CREAR PAQUETE (con transaction)
     const nuevoPaquete = await Paquete.create({
       nombre: nombre.toString().trim(),
-      destino: destino.toString().trim(), 
+      destino: destino.toString().trim(),
       descripcion: descripcion.toString().trim(),
       precio: parseFloat(precio),
       duracion_dias: duracion_dias ? parseInt(duracion_dias) : null,
       es_destacado: esDestacadoBool
-    }, { transaction });
+    }, { transaction }); // ← Transaction aquí
 
-    // 3. Crear relaciones en tabla intermedia PaqueteCiudad
-    const relacionesCiudades = ciudadesSeleccionadas.map(ciudadId => ({
-      id_paquete: nuevoPaquete.id_paquete,
-      id_ciudad: parseInt(ciudadId)
-    }));
+    // 2. PROCESAR CIUDADES (con transaction)
+    const ciudadesSeleccionadas = Array.isArray(ciudades) ? ciudades : [ciudades];
+    if (ciudadesSeleccionadas.length > 0) {
+      const relacionesCiudades = ciudadesSeleccionadas.map(ciudadId => ({
+        id_paquete: nuevoPaquete.id_paquete,
+        id_ciudad: parseInt(ciudadId)
+      }));
+      await PaqueteCiudad.bulkCreate(relacionesCiudades, { transaction });
+    }
 
-    await PaqueteCiudad.bulkCreate(relacionesCiudades, { transaction });
+    // 3. PROCESAR IMÁGENES (con transaction)
+    if (imagenesSubidas.length > 0) {
+      const imagenes = imagenesSubidas.map((file, index) => ({
+        ruta: '/uploads/paquetes/' + file.filename,
+        id_paquete: nuevoPaquete.id_paquete,
+        es_portada: parseInt(imagenPortada) === index
+      }));
+      await Imagen.bulkCreate(imagenes, { transaction }); // ← Transaction aquí
+    }
 
+    // 4. SI TODO SALE BIEN - COMMIT
     await transaction.commit();
-    res.redirect(`/paquetes/${nuevoPaquete.id}?success=Paquete creado correctamente`);
+    console.log('✅ Transacción completada exitosamente');
+
+    res.redirect(`/paquetes/${nuevoPaquete.id_paquete}?success=Paquete creado con imágenes`);
 
   } catch (error) {
+    // 5. SI HAY ERROR - ROLLBACK
     await transaction.rollback();
-    console.error('Error al crear paquete:', error);
+    console.error('❌ Error en la transacción:', error);
 
-    // Recargar ciudades para mostrar el formulario de nuevo
+    // 6. ELIMINAR IMÁGENES SUBIDAS (si se subieron antes del error)
+    if (req.files && req.files['imagenes']) {
+      const fs = require('fs');
+      req.files['imagenes'].forEach(file => {
+        try {
+          if (fs.existsSync(file.path)) {
+            fs.unlinkSync(file.path);
+            console.log('🗑️ Imagen eliminada:', file.path);
+          }
+        } catch (unlinkError) {
+          console.error('Error eliminando imagen:', unlinkError);
+        }
+      });
+    }
+
+    // 7. RECARGAR DATOS PARA MOSTRAR FORMULARIO DE NUEVO
     const ciudades = await Ciudad.findAll({
       include: [{
         model: Pais,

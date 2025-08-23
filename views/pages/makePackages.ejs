@@ -64,5 +64,27 @@
     <input type="checkbox" name="es_destacado" value="true">
   </div>
 
+  <div class="form-group">
+    <label>Imágenes del Paquete:*</label>
+    <input type="file" name="imagenes" multiple accept="image/*" required>
+    <small>Seleccione al menos una imagen</small>
+  </div>
+
+  <!-- Selector de imagen portada (se mostrará dinámicamente) -->
+  <div class="form-group" id="portada-container" style="display: none;">
+    <label>Imagen de portada:*</label>
+    <div id="portada-options">
+      <!-- Las opciones se llenarán con JavaScript -->
+    </div>
+  </div>
+
+  <!-- Campo hidden para almacenar la elección -->
+  <input type="hidden" name="imagenPortada" id="imagenPortadaInput" value="0">
+
   <button type="submit">Crear Paquete</button>
 </form>
+
+<script src="/javascripts/imagenes.js"></script>
+<script src="/javascripts/ciudades.js"></script>
+<!-- <script src="/javascripts/ciudades2.js"></script> -->
+

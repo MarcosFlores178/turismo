@@ -38,4 +38,10 @@ const upload = multer({
   fileFilter: fileFilter
 });
 
-module.exports = upload;
+// Exporta el middleware específico
+exports.uploadMiddleware = upload.fields([
+  { name: 'imagenes', maxCount: 10 },
+  { name: 'imagenPortada', maxCount: 1 }
+]);
+
+// module.exports = upload;
