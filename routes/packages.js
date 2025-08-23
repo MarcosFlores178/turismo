@@ -9,5 +9,6 @@ router.get('/', function(req, res, next) {
 
 /* GET crear paquete page. */
 router.get('/make', packagesController.mostrarFormularioCreacion);
+router.post('/make', packagesController.crearPaquete);
 
 module.exports = router;

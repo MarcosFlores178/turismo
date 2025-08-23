@@ -19,6 +19,11 @@
     <input type="text" name="nombre" required>
   </div>
 
+<div class="form-group">
+    <label for="destino">Destino:</label>
+    <input type="text" name="destino" required>
+</div>
+
   <div class="form-group">
     <label>Descripción:</label>
     <textarea name="descripcion" required></textarea>
@@ -42,7 +47,7 @@
     <select name="ciudades" multiple required class="select-multiple">
       <% ciudades.forEach(ciudad => { %>
         <option value="<%= ciudad.id_ciudad %>">
-          <%= ciudad.nombre %> - <%= ciudad.Pais.nombre %>
+          <%= ciudad.nombre %> - <%= ciudad.pais.nombre %>
         </option>
       <% }); %>
     </select>
@@ -56,7 +61,7 @@
 
   <div class="form-group">
     <label>¿Es paquete destacado?</label>
-    <input type="checkbox" name="esDestacado" value="true">
+    <input type="checkbox" name="es_destacado" value="true">
   </div>
 
   <button type="submit">Crear Paquete</button>
