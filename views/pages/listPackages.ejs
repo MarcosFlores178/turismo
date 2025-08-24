@@ -1,0 +1,21 @@
+<main>
+    <h1>Nuestros paquetes turísticos</h1>
+    <ul>
+        <% paquetes.forEach(paquete => { %>
+            <li>
+                <h2><%= paquete.nombre %></h2>
+                <p>Destino: <%= paquete.destino %></p>
+                <p>Descripción: <%= paquete.descripcion %></p>
+                <p>Precio: <%= paquete.precio %></p>
+                <p>Duración: <%= paquete.duracion_dias %> días</p>
+                <p>Destacado: <%= paquete.es_destacado ? 'Sí' : 'No' %></p>
+                <h3>Ciudades incluidas:</h3>
+                <ul>
+                    <% paquete.ciudades.forEach(ciudad => { %>
+                        <li><%= ciudad.nombre %></li>
+                    <% }); %>
+                </ul>
+            </li>
+        <% }); %>
+    </ul>
+</main>

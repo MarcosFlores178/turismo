@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paquetes Turísticos</title>
+    <style>
+        .paquetes-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .paquete-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            display: flex;
+            transition: transform 0.3s ease;
+        }
+
+        .paquete-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .paquete-imagen-container {
+            flex: 0 0 300px;
+            position: relative;
+        }
+
+        .paquete-imagen {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .paquete-contenido {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .paquete-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .paquete-titulo {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        .paquete-precio {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c5530;
+            white-space: nowrap;
+        }
+
+        .paquete-descripcion {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            flex: 1;
+        }
+
+        .paquete-detalles {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .detalle-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #555;
+        }
+
+        .ciudades-container {
+            margin-bottom: 15px;
+        }
+
+        .ciudad-tag {
+            display: inline-block;
+            background: #f0f8ff;
+            border: 1px solid #d1e7fe;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .ciudad-principal {
+            background: #e6f7ff;
+            border-color: #91d5ff;
+            font-weight: bold;
+        }
+
+        .paquete-acciones {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .paquete-btn {
+            background: #2c5530;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .paquete-btn:hover {
+            background: #1e3a23;
+        }
+
+        .badge-destacado {
+            background: #ffd700;
+            color: #333;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .sin-paquetes {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .paquete-item {
+                flex-direction: column;
+            }
+            
+            .paquete-imagen-container {
+                flex: 0 0 200px;
+            }
+            
+            .paquete-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .paquete-detalles {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="paquetes-container">
+        <% if (successMessage) { %>
+            <div class="success-message">
+                <%= successMessage %>
+            </div>
+        <% } %>
+
+        <% if (paquetes.length === 0) { %>
+            <div class="sin-paquetes">
+                <h3>No hay paquetes disponibles</h3>
+                <p>No se encontraron paquetes turísticos en este momento.</p>
+            </div>
+        <% } %>
+
+        <% paquetes.forEach(paquete => { %>
+            <div class="paquete-item">
+                <!-- Imagen -->
+                <div class="paquete-imagen-container">
+                    <% if (paquete.Imagenes && paquete.Imagenes.length > 0) { %>
+                        <img src="/uploads/<%= paquete.Imagenes[0].nombre_archivo %>" 
+                             alt="<%= paquete.nombre %>" 
+                             class="paquete-imagen">
+                    <% } else { %>
+                        <img src="/images/default-package.jpg" 
+                             alt="Imagen por defecto" 
+                             class="paquete-imagen">
+                    <% } %>
+                </div>
+
+                <!-- Contenido -->
+                <div class="paquete-contenido">
+                    <!-- Header con título y precio -->
+                    <div class="paquete-header">
+                        <h2 class="paquete-titulo">
+                            <%= paquete.nombre %>
+                            <% if (paquete.es_destacado) { %>
+                                <span class="badge-destacado">⭐ Destacado</span>
+                            <% } %>
+                        </h2>
+                        <div class="paquete-precio">
+                            $<%= paquete.precio.toLocaleString() %>
+                        </div>
+                    </div>
+
+                    <!-- Descripción -->
+                    <p class="paquete-descripcion">
+                        <%= paquete.descripcion %>
+                    </p>
+
+                    <!-- Detalles: duración y destino principal -->
+                    <div class="paquete-detalles">
+                        <% if (paquete.duracion_dias) { %>
+                            <div class="detalle-item">
+                                📅 <strong><%= paquete.duracion_dias %> días</strong>
+                            </div>
+                        <% } %>
+
+                        <% const destinoPrincipal = paquete.Ciudades && paquete.Ciudades.find(c => c.PaqueteCiudad.es_destino_principal); %>
+                        <% if (destinoPrincipal) { %>
+                            <div class="detalle-item">
+                                📍 <strong>Destino principal:</strong> <%= destinoPrincipal.nombre %>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <!-- Ciudades incluidas -->
+                    <% if (paquete.Ciudades && paquete.Ciudades.length > 0) { %>
+                        <div class="ciudades-container">
+                            <strong>Ciudades incluidas:</strong><br>
+                            <% paquete.Ciudades.forEach(ciudad => { %>
+                                <span class="ciudad-tag <%= ciudad.PaqueteCiudad.es_destino_principal ? 'ciudad-principal' : '' %>">
+                                    <%= ciudad.nombre %>
+                                    <% if (ciudad.PaqueteCiudad.es_destino_principal) { %>
+                                        👑
+                                    <% } %>
+                                </span>
+                            <% }); %>
+                        </div>
+                    <% } %>
+
+                    <!-- Botón de acción -->
+                    <div class="paquete-acciones">
+                        <a href="/paquetes/<%= paquete.id_paquete %>" class="paquete-btn">
+                            Ver detalles completos →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</body>
+</html>

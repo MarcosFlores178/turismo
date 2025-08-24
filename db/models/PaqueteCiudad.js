@@ -18,11 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         orden_visita: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: true
         },
         es_destino_principal: {
             type: DataTypes.BOOLEAN,
-            allowNull: false
+            allowNull: true
         }
     },
 {

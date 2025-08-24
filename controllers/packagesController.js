@@ -50,7 +50,7 @@ exports.crearPaquete = async (req, res) => {
     const imagenesSubidas = req.files['imagenes'] || [];
     const imagenPortada = req.body.imagenPortada || '0';
 
-    const esDestacadoBool = esDestacado === 'true' || esDestacado === '1' || esDestacado === true;
+    const esDestacadoBool = es_destacado === 'true' || es_destacado === '1' || es_destacado === true;
 
     // 1. CREAR PAQUETE (con transaction)
     const nuevoPaquete = await Paquete.create({
@@ -67,7 +67,9 @@ exports.crearPaquete = async (req, res) => {
     if (ciudadesSeleccionadas.length > 0) {
       const relacionesCiudades = ciudadesSeleccionadas.map(ciudadId => ({
         id_paquete: nuevoPaquete.id_paquete,
-        id_ciudad: parseInt(ciudadId)
+        id_ciudad: parseInt(ciudadId),
+        es_destino_principal: parseInt(req.body.es_destino_principal) === parseInt(ciudadId),
+        orden_visita: parseInt(req.body[`orden_visita_${ciudadId}`]) || 1
       }));
       await PaqueteCiudad.bulkCreate(relacionesCiudades, { transaction });
     }
@@ -123,6 +125,31 @@ exports.crearPaquete = async (req, res) => {
       ciudades,
       error: 'Error al crear paquete: ' + error.message,
       formData: req.body
+    });
+  }
+};
+
+exports.listarPaquetes = async (req, res) => {
+  try {
+    const paquetes = await Paquete.findAll({
+      include: [{
+        model: Ciudad,
+        as: 'ciudades',
+        attributes: ['nombre']
+      }],
+      order: [['nombre', 'ASC']]
+    });
+
+    res.render('pages/listaPackages', {
+      title: 'Mostrar Paquetes',
+      paquetes,
+      successMessage: req.query.success
+    });
+  } catch (error) {
+    console.error('Error al mostrar paquetes:', error);
+    res.render('pages/listaPackages', {
+      title: 'Mostrar Paquetes',
+      error: 'Error al cargar paquetes: ' + error.message
     });
   }
 };

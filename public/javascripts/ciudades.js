@@ -9,18 +9,32 @@ document.querySelector('select[name="ciudades"]').addEventListener('change', fun
     const cityId = option.value;
     const cityName = option.text;
     
+    // detailsContainer.innerHTML += `
+    //   <div class="city-detail">
+    //     <h4>${cityName}</h4>
+    //     <label>
+    //       <input type="checkbox" name="ciudad_principal_${cityId}" value="true">
+    //       ¿Destino principal?
+    //     </label>
+    //     <label>
+    //       Orden de visita:
+    //       <input type="number" name="orden_visita_${cityId}" value="${index + 1}" min="1">
+    //     </label>
+    //   </div>
+    // `;
     detailsContainer.innerHTML += `
-      <div class="city-detail">
-        <h4>${cityName}</h4>
-        <label>
-          <input type="checkbox" name="ciudad_principal_${cityId}" value="true">
-          ¿Destino principal?
-        </label>
-        <label>
-          Orden de visita:
-          <input type="number" name="orden_visita_${cityId}" value="${index + 1}" min="1">
-        </label>
-      </div>
-    `;
+  <div class="city-detail">
+    <h4>${cityName}</h4>
+    <label>
+      <!-- CAMBIA: checkbox → radio con mismo name -->
+      <input type="radio" name="es_destino_principal" value="${cityId}">
+      ¿Destino principal?
+    </label>
+    <label>
+      Orden de visita:
+      <input type="number" name="orden_visita_${cityId}" value="${index + 1}" min="1">
+    </label>
+  </div>
+`;
   });
 });

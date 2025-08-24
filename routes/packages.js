@@ -12,4 +12,6 @@ router.get('/', function(req, res, next) {
 router.get('/make', packagesController.mostrarFormularioCreacion);
 router.post('/make', uploadMiddleware, packagesController.crearPaquete);
 
+router.get('/list', packagesController.listarPaquetes);
+
 module.exports = router;
