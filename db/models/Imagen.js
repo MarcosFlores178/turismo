@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'id_paquete',
       as: 'paquete'
     });
+    
   };
 
   return Imagen;

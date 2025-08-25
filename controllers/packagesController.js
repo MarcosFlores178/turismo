@@ -136,7 +136,12 @@ exports.listarPaquetes = async (req, res) => {
         model: Ciudad,
         as: 'ciudades',
         attributes: ['nombre']
-      }],
+      },
+    {
+      model: Imagen,  // ← ¿Está correcto el modelo?
+      as: 'imagenes',
+      attributes: ['ruta', 'es_portada', 'id_imagen']
+    }],
       order: [['nombre', 'ASC']]
     });
 
@@ -145,6 +150,11 @@ exports.listarPaquetes = async (req, res) => {
       paquetes,
       successMessage: req.query.success
     });
+    // DEBUG: Verifica qué se está obteniendo
+console.log('Número de paquetes:', paquetes.length);
+if (paquetes.length > 0) {
+  console.log('Imágenes del primer paquete:', paquetes[0].imagenes);
+}
   } catch (error) {
     console.error('Error al mostrar paquetes:', error);
     res.render('pages/listaPackages', {
