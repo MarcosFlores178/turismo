@@ -13,5 +13,7 @@ router.get('/make', packagesController.mostrarFormularioCreacion);
 router.post('/make', uploadMiddleware, packagesController.crearPaquete);
 
 router.get('/list', packagesController.listarPaquetes);
+router.get('/details/:id', packagesController.mostrarDetallesPaquete);
+router.get('/contact/:id', packagesController.mostrarFormularioConsulta);
 
 module.exports = router;

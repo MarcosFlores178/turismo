@@ -163,3 +163,73 @@ if (paquetes.length > 0) {
     });
   }
 };
+
+exports.mostrarDetallesPaquete = async (req, res) => {
+  try {
+    const paquete = await Paquete.findByPk(req.params.id, {
+      include: [{
+        model: Ciudad,
+        as: 'ciudades',
+        attributes: ['nombre']
+      },
+      {
+        model: Imagen,
+        as: 'imagenes',
+        attributes: ['ruta', 'es_portada', 'id_imagen']
+      }]
+    });
+
+    if (!paquete) {
+      return res.status(404).render('pages/error', {
+        title: 'Paquete no encontrado',
+        error: 'El paquete solicitado no existe.'
+      });
+    }
+
+    res.render('pages/detailsPackage', {
+      title: 'Detalles del Paquete',
+      paquete
+    });
+  } catch (error) {
+    console.error('Error al mostrar detalles del paquete:', error);
+    res.status(500).render('pages/error', {
+      title: 'Error interno del servidor',
+      error: 'No se pudo cargar el paquete: ' + error.message
+    });
+  }
+};
+
+exports.mostrarFormularioConsulta = async (req, res) => {
+  try {
+    const paquete = await Paquete.findByPk(req.params.id, {
+      include: [{
+        model: Ciudad,
+        as: 'ciudades',
+        attributes: ['nombre']
+      },
+      {
+        model: Imagen,
+        as: 'imagenes',
+        attributes: ['ruta', 'es_portada', 'id_imagen']
+      }]
+    });
+
+    if (!paquete) {
+      return res.status(404).render('pages/error', {
+        title: 'Paquete no encontrado',
+        error: 'El paquete solicitado no existe.'
+      });
+    }
+
+    res.render('pages/contactPackage', {
+      title: 'Contacto sobre el Paquete',
+      paquete
+    });
+  } catch (error) {
+    console.error('Error al mostrar formulario de consulta:', error);
+    res.status(500).render('pages/error', {
+      title: 'Error interno del servidor',
+      error: 'No se pudo cargar el formulario de consulta: ' + error.message
+    });
+  }
+};

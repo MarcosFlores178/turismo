@@ -1,90 +1,184 @@
-<h1>Crear Paquetes</h1>
-<!-- En la parte superior de tu vista -->
-<% if (typeof error !== 'undefined' && error) { %>
-  <div class="error-message" style="background: #ffebee; color: #c62828; padding: 15px; margin: 10px 0; border: 1px solid #c62828; border-radius: 5px;">
-    <strong>⚠️ Error:</strong> <%= error %>
-  </div>
-<% } %>
+<% const title = 'Crear Nuevo Paquete' %>
 
-<% if (typeof success !== 'undefined' && success) { %>
-  <div class="success-message" style="background: #e8f5e9; color: #2e7d32; padding: 15px; margin: 10px 0; border: 1px solid #2e7d32; border-radius: 5px;">
-    <strong>✅ Éxito:</strong> <%= success %>
-  </div>
-<% } %>
-<form action="/packages/make" method="POST" enctype="multipart/form-data">
-  
-  <!-- Datos básicos del paquete -->
-  <div class="form-group">
-    <label>Nombre del Paquete:</label>
-    <input type="text" name="nombre" required>
-  </div>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2 text-primary">
+                    <i class="bi bi-plus-circle"></i> Crear Nuevo Paquete
+                </h1>
+                <a href="/paquetes" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+            </div>
 
-<div class="form-group">
-    <label for="destino">Destino:</label>
-    <input type="text" name="destino" required>
+            <!-- Mensajes de alerta -->
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>Error:</strong> <%= error %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <% } %>
+
+            <% if (typeof success !== 'undefined' && success) { %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle"></i>
+                    <strong>¡Éxito!</strong> <%= success %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <% } %>
+
+            <!-- Formulario -->
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-info-circle"></i> Información del Paquete
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form action="/packages/make" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        
+                        <!-- Datos básicos -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nombre" class="form-label">
+                                    <i class="bi bi-tag"></i> Nombre del Paquete *
+                                </label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                <div class="invalid-feedback">Por favor ingresa el nombre del paquete</div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="destino" class="form-label">
+                                    <i class="bi bi-geo-alt"></i> Destino *
+                                </label>
+                                <input type="text" class="form-control" id="destino" name="destino" required>
+                                <div class="invalid-feedback">Por favor ingresa el destino</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">
+                                <i class="bi bi-textarea-t"></i> Descripción *
+                            </label>
+                            <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required></textarea>
+                            <div class="invalid-feedback">Por favor ingresa una descripción</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="precio" class="form-label">
+                                    <i class="bi bi-currency-dollar"></i> Precio *
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" class="form-control" id="precio" name="precio" step="0.01" min="0" required>
+                                    <div class="invalid-feedback">Por favor ingresa un precio válido</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="duracion_dias" class="form-label">
+                                    <i class="bi bi-calendar"></i> Duración (días) *
+                                </label>
+                                <input type="number" class="form-control" id="duracion_dias" name="duracion_dias" min="1" required>
+                                <div class="invalid-feedback">Por favor ingresa la duración</div>
+                            </div>
+                        </div>
+
+                        <!-- Selección de Ciudades -->
+                        <div class="mb-3">
+                            <label for="ciudades" class="form-label">
+                                <i class="bi bi-buildings"></i> Ciudades incluidas *
+                            </label>
+                            <select class="form-select" id="ciudades" name="ciudades" multiple size="5" required>
+                                <% ciudades.forEach(ciudad => { %>
+                                    <option value="<%= ciudad.id_ciudad %>">
+                                        <%= ciudad.nombre %> - <%= ciudad.pais.nombre %>
+                                    </option>
+                                <% }); %>
+                            </select>
+                            <div class="form-text">
+                                Mantén CTRL (Cmd en Mac) para seleccionar múltiples ciudades
+                            </div>
+                            <div class="invalid-feedback">Por favor selecciona al menos una ciudad</div>
+                        </div>
+
+                        <!-- Campos dinámicos para ciudades -->
+                        <div id="ciudades-detalles" class="mb-3" style="display: none;">
+                            <!-- JavaScript llenará esto dinámicamente -->
+                        </div>
+
+                        <!-- Checkbox destacado -->
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="es_destacado" name="es_destacado" value="true">
+                                <label class="form-check-label" for="es_destacado">
+                                    <i class="bi bi-star"></i> ¿Es paquete destacado?
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Upload de imágenes -->
+                        <div class="mb-3">
+                            <label for="imagenes" class="form-label">
+                                <i class="bi bi-images"></i> Imágenes del Paquete *
+                            </label>
+                            <input type="file" class="form-control" id="imagenes" name="imagenes" multiple accept="image/*" required>
+                            <div class="form-text">Selecciona al menos una imagen (múltiples selecciones permitidas)</div>
+                            <div class="invalid-feedback">Por favor selecciona al menos una imagen</div>
+                        </div>
+
+                        <!-- Selector de imagen portada -->
+                        <div class="mb-3" id="portada-container" style="display: none;">
+                            <label class="form-label">
+                                <i class="bi bi-image"></i> Imagen de portada *
+                            </label>
+                            <div id="portada-options" class="row">
+                                <!-- Las opciones se llenarán con JavaScript -->
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="imagenPortada" id="imagenPortadaInput" value="0">
+
+                        <!-- Botones de submit -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <button type="reset" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-x-circle"></i> Limpiar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Crear Paquete
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-  <div class="form-group">
-    <label>Descripción:</label>
-    <textarea name="descripcion" required></textarea>
-  </div>
-
-  <div class="form-group">
-    <label>Precio:</label>
-    <input type="number" name="precio" step="0.01" required>
-  </div>
-
-  <div class="form-group">
-    <label>Duración (días):</label>
-    <input type="number" name="duracion_dias" required>
-  </div>
-
-  <!-- Selección de Ciudades (MÚLTIPLE) -->
-  <div class="form-group">
-    <label>Ciudades que incluye el paquete:</label>
-    
-    <!-- Select múltiple para ciudades -->
-    <select name="ciudades" multiple required class="select-multiple">
-      <% ciudades.forEach(ciudad => { %>
-        <option value="<%= ciudad.id_ciudad %>">
-          <%= ciudad.nombre %> - <%= ciudad.pais.nombre %>
-        </option>
-      <% }); %>
-    </select>
-    <small>Mantén CTRL (Cmd en Mac) para seleccionar múltiples ciudades</small>
-  </div>
-
-  <!-- Campos adicionales para cada ciudad seleccionada -->
-  <div id="ciudades-detalles" style="display: none;">
-    <!-- JavaScript llenará esto dinámicamente -->
-  </div>
-
-  <div class="form-group">
-    <label>¿Es paquete destacado?</label>
-    <input type="checkbox" name="es_destacado" value="true">
-  </div>
-
-  <div class="form-group">
-    <label>Imágenes del Paquete:*</label>
-    <input type="file" name="imagenes" multiple accept="image/*" required>
-    <small>Seleccione al menos una imagen</small>
-  </div>
-
-  <!-- Selector de imagen portada (se mostrará dinámicamente) -->
-  <div class="form-group" id="portada-container" style="display: none;">
-    <label>Imagen de portada:*</label>
-    <div id="portada-options">
-      <!-- Las opciones se llenarán con JavaScript -->
-    </div>
-  </div>
-
-  <!-- Campo hidden para almacenar la elección -->
-  <input type="hidden" name="imagenPortada" id="imagenPortadaInput" value="0">
-
-  <button type="submit">Crear Paquete</button>
-</form>
-
+<!-- Scripts -->
 <script src="/javascripts/imagenes.js"></script>
 <script src="/javascripts/ciudades.js"></script>
-<!-- <script src="/javascripts/ciudades2.js"></script> -->
+
+<!-- Validación Bootstrap -->
+<script>
+// Validación de formulario
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+})()
+</script>
 

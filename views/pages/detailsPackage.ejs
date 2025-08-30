@@ -1,0 +1,25 @@
+<main>
+    <div class="container my-4">
+        <h1 class="text-center">Detalles del paquete</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <h2><%= paquete.nombre %></h2>
+                <p><strong>Destino:</strong> <%= paquete.destino %></p>
+                <p><strong>Descripción:</strong> <%= paquete.descripcion %></p>
+                <p><strong>Precio:</strong> $<%= paquete.precio %></p>
+                <p><strong>Duración:</strong> <%= paquete.duracion_dias %> días</p>
+                <p><strong>Destacado:</strong> <%= paquete.es_destacado ? 'Sí' : 'No' %></p>
+            </div>
+            <div class="col-md-6">
+                <h3>Imágenes</h3>
+                <div class="row">
+                    <% paquete.imagenes.forEach(imagen => { %>
+                        <div class="col-md-4">
+                            <img src="<%= imagen.ruta %>" alt="Imagen de <%= paquete.nombre %>" class="img-fluid">
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

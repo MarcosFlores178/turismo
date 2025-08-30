@@ -1,8 +1,15 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+html, body {
+  height: 100%;
+  display: flex;
+  font-family:  "Open Sans", sans-serif; 
+  flex-direction: column;
 }
 
-a {
-  color: #00B7FF;
+.btn,
+.btn * {  /* con * también afecta al <i> adentro del botón */
+  font-family: system-ui, sans-serif; /* hereda lo que Bootstrap define por defecto */
+}
+
+main {
+  flex-grow: 1;          /* el main se estira para ocupar el espacio libre */
 }
