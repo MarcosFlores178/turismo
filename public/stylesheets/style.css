@@ -13,3 +13,97 @@ html, body {
 main {
   flex-grow: 1;          /* el main se estira para ocupar el espacio libre */
 }
+
+h1 {
+  margin-bottom: 2rem;
+}
+
+.orange {
+  height: 4.5rem;
+  background-color: #F5F0E1;
+  /* padding-left: 10rem;
+  padding-right: 10rem; */
+}
+
+.link a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  /* centra verticalmente el contenido dentro del <a> */
+  text-decoration: none;    /* opcional, para sacar subrayado */
+  color: inherit;           /* opcional, para heredar color */
+}
+
+.orange p {
+margin-bottom: 0;
+}
+
+.titulo-card {
+  color: #800020;
+  
+}
+
+.nav {
+  background-color: #800020;
+}
+
+a {
+  text-decoration: none;
+}
+
+.telefono {
+  margin-top: 0.7rem;
+}
+
+.boton-bg-bordo {
+  background-color: #800020;
+  color: white;
+  border: 1px solid #800020; /* borde definido desde el inicio */
+  transition: all 0.3s ease;
+}
+
+.boton-bg-bordo:hover {
+  background-color: #a02040; /* un tono más claro */
+  transform: scale(1.05); /* agrandar levemente */
+  border: 1px solid #800020; 
+}
+
+.boton-linea-bordo {
+  background-color: #ffffff;
+  color: #800020;
+  border: 1px solid #800020; /* borde fijo */
+  transition: all 0.3s ease;
+}
+
+.boton-linea-bordo:hover {
+  background-color: #800020; /* fondo bordó */
+  color: white; /* texto blanco */
+  transform: scale(1.05); /* agrandar levemente */
+  border: 1px solid #800020; /* mantiene grosor, solo color cambia */
+}
+
+/* Estilos para el footer */
+footer {
+  background-color: #2D2D2D;
+  /* color: white; */
+  padding: 2rem 0;
+}
+
+footer a {
+  color: white;
+  text-decoration: underline;
+}
+
+footer a:hover {
+  text-decoration: none;
+}
+
+.hover-card {
+  transition: transform 0.5s ease;
+}
+
+/* Efecto de sombreado en hover-card */
+.hover-card:hover {
+  /* transform: scale(1.05); */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}

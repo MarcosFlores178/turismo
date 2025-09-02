@@ -1,11 +1,25 @@
 <!-- views/partials/header.ejs -->
-<header class="main-header">
-  <nav>
-    <a href="/">Inicio</a>
-    <a href="/paquetes">Paquetes</a>
-    <a href="/recomendados">Recomendados</a>
-    <a href="/promociones">Promciones</a>
-    <a href="/sobre-nosotros">Sobre nosotros</a>
-    <a href="/contacto">Contacto</a>
-  </nav>
-</header>
+<header>
+  <div class="d-flex justify-content-around align-items-center py-3 px-5 orange">
+    <!-- <span class="telefono">Teléfono: 123-456-7890</span> -->
+     <div class="d-flex flex-column justify-content-center align-items-center">
+       <p>Teléfono</p>
+       <p>123-456-7890</p>
+     </div>
+     <div class="d-flex flex-column justify-content-center align-items-center link">
+    <a href="https://api.whatsapp.com/send?phone=1234567890" target="_blank">
+      <!-- <span>Mandanos un whatsapp</span> -->
+       <P>Whatsapp</P>
+      <i class="fab fa-whatsapp fa-2x"></i>
+    </a>
+    </div>
+    <div class="d-flex flex-column justify-content-center align-items-center link">
+      <a href="http://">
+      <p>Nuestro local</p>
+      <i class="fa-solid fa-location-dot fa-2x"></i>
+    </a>
+    </div>
+    
+  </div>
+  </div>
+  </header>

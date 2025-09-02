@@ -1,25 +1,75 @@
 <main>
     <div class="container my-4">
-        <h1 class="text-center">Detalles del paquete</h1>
-        <div class="row">
+        
+        <div class="row border border-2 border-primary rounded-3 p-2">
+        <h1 class="text-center"><%= paquete.nombre %></h1>
             <div class="col-md-6">
-                <h2><%= paquete.nombre %></h2>
+                
+                <div class="row">
+                    <% paquete.imagenes.forEach(imagen => { %>
+                        <div >
+                            <img src="<%= imagen.ruta %>" alt="Imagen de <%= paquete.nombre %>" class="img-fluid rounded">
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+            <div class="d-flex flex-column justify-content-between col-md-6">
                 <p><strong>Destino:</strong> <%= paquete.destino %></p>
                 <p><strong>Descripción:</strong> <%= paquete.descripcion %></p>
                 <p><strong>Precio:</strong> $<%= paquete.precio %></p>
                 <p><strong>Duración:</strong> <%= paquete.duracion_dias %> días</p>
                 <p><strong>Destacado:</strong> <%= paquete.es_destacado ? 'Sí' : 'No' %></p>
             </div>
-            <div class="col-md-6">
-                <h3>Imágenes</h3>
-                <div class="row">
-                    <% paquete.imagenes.forEach(imagen => { %>
-                        <div class="col-md-4">
-                            <img src="<%= imagen.ruta %>" alt="Imagen de <%= paquete.nombre %>" class="img-fluid">
-                        </div>
-                    <% }); %>
-                </div>
-            </div>
         </div>
+        <div class="row justify-content-center text-center my-4">
+  <div class="col-md-10">
+    <h1>Hacenos tu consulta</h1>
+    <p class="mb-5">Completa el formulario para enviarnos tu consulta sobre este paquete.</p>
+
+    <form action="/packages/contact/<%= paquete.id_paquete %>" method="POST">
+      <div class="row">
+        <!-- Columna izquierda -->
+        <div class="col-md-6 text-start">
+          <div class="row">
+            <!-- Nombre -->
+            <div class="col-md-6 mb-3">
+              <label for="nombre" class="form-label">Nombre:</label>
+              <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+            <!-- Apellido -->
+            <div class="col-md-6 mb-3">
+              <label for="apellido" class="form-label">Apellido:</label>
+              <input type="text" class="form-control" id="apellido" name="apellido" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Teléfono -->
+            <div class="col-md-6 mb-3">
+              <label for="telefono" class="form-label">Teléfono:</label>
+              <input type="text" class="form-control" id="telefono" name="telefono" required>
+            </div>
+            <!-- Email -->
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna derecha -->
+        <div class="col-md-6 mb-3 text-start d-flex flex-column">
+          <label for="mensaje" class="form-label">Tu consulta:</label>
+          <textarea class="form-control h-100" id="mensaje" name="mensaje" required></textarea>
+        </div>
+      </div>
+
+      <div class="text-center mt-3">
+        <button type="submit" class="btn btn-primary w-50">Enviar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
     </div>
 </main>
