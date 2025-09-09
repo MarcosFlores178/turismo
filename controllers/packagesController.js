@@ -233,3 +233,69 @@ exports.mostrarFormularioConsulta = async (req, res) => {
     });
   }
 };
+
+exports.mostrarFormularioEdicion = // Mostrar formulario de edición
+exports.editarPaqueteView = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    // Buscar paquete con relaciones
+    const paquete = await Paquete.findByPk(id, {
+      include: [
+        {
+          model: Ciudad,
+          as: "ciudades",
+          include: [{ model: Pais, as: "pais", attributes: ["nombre"] }]
+        },
+        {
+          model: Imagen,
+          as: "imagenes"
+        }
+      ]
+    });
+
+    if (!paquete) {
+      return res.status(404).render("pages/error", { error: "Paquete no encontrado" });
+    }
+
+    // Traer todas las ciudades disponibles
+    const ciudades = await Ciudad.findAll({
+      include: [{ model: Pais, as: "pais", attributes: ["nombre"] }],
+      order: [["nombre", "ASC"]]
+    });
+
+    res.render("pages/editPackage", {
+      title: "Editar Paquete",
+      paquete,
+      ciudades
+    });
+  } catch (error) {
+    console.error("❌ Error cargando paquete:", error);
+    res.status(500).send(error.message);
+  }
+};
+
+exports.guardarPaqueteEditado = async (req, res) => {
+  try {
+    const id_paquete = req.params.id;
+    const { nombre, destino, descripcion, precio, duracion_dias, ciudades } = req.body;
+
+    // Actualizar paquete
+    await Paquete.update(
+      { nombre, destino, descripcion, precio, duracion_dias },
+      { where: { id_paquete }, returning: true }
+    );
+
+    // Actualizar ciudades relacionadas
+    await PaqueteCiudad.destroy({ where: { id_paquete } });
+    const ciudadInstances = await Ciudad.findAll({ where: { id_ciudad: ciudades } });
+    await PaqueteCiudad.bulkCreate(
+      ciudadInstances.map(ciudad => ({ id_paquete, id_ciudad: ciudad.id_ciudad }))
+    );
+
+    res.redirect(`/paquetes/${id_paquete}?success=Paquete actualizado con éxito`);
+  } catch (error) {
+    console.error("❌ Error guardando paquete editado:", error);
+    res.status(500).send(error.message);
+  }
+};

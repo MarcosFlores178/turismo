@@ -1,3 +1,15 @@
+:root {
+  /* --color-principal: #800020; */
+  /* --color-secundario: #F5F0E1; */
+  --color-principal-claro: #a02040;
+  --color-terciario: #2D2D2D;
+  --color-detalle: #D4AF37;
+  
+  --color-principal: #0A2540;
+  --color-secundario: #F4F4F4;
+
+}
+
 html, body {
   height: 100%;
   display: flex;
@@ -20,7 +32,7 @@ h1 {
 
 .orange {
   height: 4.5rem;
-  background-color: #F5F0E1;
+  background-color: var(--color-secundario);
   /* padding-left: 10rem;
   padding-right: 10rem; */
 }
@@ -39,16 +51,20 @@ margin-bottom: 0;
 }
 
 .titulo-card {
-  color: #800020;
+  color: var(--color-principal);
   
 }
 
 .nav {
-  background-color: #800020;
+  background-color: var(--color-principal);
 }
 
 a {
   text-decoration: none;
+}
+
+.menu{
+  color: var(--color-detalle);
 }
 
 .telefono {
@@ -56,35 +72,35 @@ a {
 }
 
 .boton-bg-bordo {
-  background-color: #800020;
+  background-color: var(--color-principal);
   color: white;
-  border: 1px solid #800020; /* borde definido desde el inicio */
+  border: 1px solid var(--color-principal); /* borde definido desde el inicio */
   transition: all 0.3s ease;
 }
 
 .boton-bg-bordo:hover {
-  background-color: #a02040; /* un tono más claro */
+  background-color: var(--color-principal-claro); /* un tono más claro */
   transform: scale(1.05); /* agrandar levemente */
-  border: 1px solid #800020; 
+  border: 1px solid var(--color-principal);
 }
 
 .boton-linea-bordo {
   background-color: #ffffff;
-  color: #800020;
-  border: 1px solid #800020; /* borde fijo */
+  color: var(--color-principal);
+  border: 1px solid var(--color-principal); /* borde fijo */
   transition: all 0.3s ease;
 }
 
 .boton-linea-bordo:hover {
-  background-color: #800020; /* fondo bordó */
+  background-color: var(--color-principal); /* fondo bordó */
   color: white; /* texto blanco */
   transform: scale(1.05); /* agrandar levemente */
-  border: 1px solid #800020; /* mantiene grosor, solo color cambia */
+  border: 1px solid var(--color-principal); /* mantiene grosor, solo color cambia */
 }
 
 /* Estilos para el footer */
 footer {
-  background-color: #2D2D2D;
+  background-color: var(--color-terciario);
   /* color: white; */
   padding: 2rem 0;
 }

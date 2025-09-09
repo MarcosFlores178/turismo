@@ -15,5 +15,7 @@ router.post('/make', uploadMiddleware, packagesController.crearPaquete);
 router.get('/list', packagesController.listarPaquetes);
 router.get('/details/:id', packagesController.mostrarDetallesPaquete);
 router.get('/contact/:id', packagesController.mostrarFormularioConsulta);
+router.get('/edit/:id', packagesController.mostrarFormularioEdicion);
+router.post('/edit/:id', uploadMiddleware, packagesController.guardarPaqueteEditado);
 
 module.exports = router;
