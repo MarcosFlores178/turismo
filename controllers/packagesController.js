@@ -1,5 +1,6 @@
 const upload = require('../config/multer');
 const { sequelize, Paquete, Ciudad, Imagen, PaqueteCiudad, Pais } = require('../db/models');
+const Swal = require('sweetalert2')
 
 // exports.upload = upload.array('imagenes', 10); // Máximo 10 imágenes
 
@@ -87,8 +88,8 @@ exports.crearPaquete = async (req, res) => {
     // 4. SI TODO SALE BIEN - COMMIT
     await transaction.commit();
     console.log('✅ Transacción completada exitosamente');
-
-    res.redirect(`/paquetes/${nuevoPaquete.id_paquete}?success=Paquete creado con imágenes`);
+    req.flash('success', `Paquete "${nuevoPaquete.nombre}" creado correctamente`);
+    res.redirect(`/packages/list`);
 
   } catch (error) {
     // 5. SI HAY ERROR - ROLLBACK

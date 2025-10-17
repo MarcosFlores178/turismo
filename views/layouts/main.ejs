@@ -4,7 +4,7 @@
     
    
      <%- include('../partials/head', { cssFile: typeof cssFile !== 'undefined' ? cssFile : '' }) %>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
    <%- include('../partials/header') %>
@@ -12,6 +12,19 @@
 
     <main>
       <%- body %>
+       <script src="/javascripts/alerts.js"></script>
+
+  <% if (success && success.length > 0) { %>
+    <script>
+      showSuccess('<%= success[0] %>');
+    </script>
+  <% } %>
+
+  <% if (error && error.length > 0) { %>
+    <script>
+      showError('<%= error[0] %>');
+    </script>
+  <% } %>
     </main>
 
     <%- include('../partials/footer') %>
